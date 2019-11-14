@@ -26,92 +26,109 @@ class Repository:
         """open and ananlyze a path"""
         files = []
         doc_lst = []
-        files = os.listdir(dir)
-        
-        if "instructors.txt" and "students.txt" and "grades.txt" and 'majors.txt'in files:
-            student_doc = os.path.join(dir, "students.txt")
-            doc_lst.append(student_doc)
-            instructor_doc = os.path.join(dir, "instructors.txt")
-            doc_lst.append(instructor_doc)
-            grade_doc = os.path.join(dir, "grades.txt")
-            doc_lst.append(grade_doc)
-            major_doc = os.path.join(dir, "majors.txt")
-            doc_lst.append(major_doc)
-            
-            
-            for doc in doc_lst:
-                
-                try:
-                    fp = open(doc, 'r')
-                except FileNotFoundError:
-                    raise FileNotFoundError(f"Can't open {doc}")
-                else:
-                    with fp:
-                        for line in fp:
-                               
-                                
-                                tem = line.replace('|','`').replace(';','`').replace('\t','`').split('`')
-                                if doc == student_doc:
-                                    if len(tem) != 3:
-                                        print("Error: students.txt file has wrong attribute")
-                                    for e in tem:
-                                        if e == '':
-                                            print("Error: There's a element is none in students.txt")
-                                    if tem[0] == 'CWID':
-                                        continue
-                                    else:
-                                        self.students[tem[0]] = Student(tem[0], tem[1], tem[2]) 
-                                elif doc == instructor_doc:
-                                    if len(tem) != 3:
-                                        print("Error: instructors.txt file has wrong attribute")
-                                    for e in tem:
-                                        if e == '': 
-                                            print("Error: There's a element is none in instructors.txt")
-                                    if tem[0] == 'CWID':
-                                        continue
-                                    else:
-                                        self.instructors[tem[0]] = Instructor(tem[0], tem[1], tem[2])
-                                elif doc == grade_doc:
-                                    if len(tem) != 4:
-                                        print("Error: grades.txt file has wrong attribute")
-                                    for e in tem:
-                                        if e == '':
-                                            print("Error: There's a element is none in grades.txt")
-                                    #print(f"tem1 is {tem[1]}, tem2 is {tem[2]}")
-                                    if tem[0] == 'StudentCWID':
-                                        continue
-                                    else:
-                                        
-                                        self.students[tem[0]].add_student_defaultdic(tem[1], tem[2])
-                                    #self.students[tem[0]].add_completed_courses(tem[1])
-                                    
-                                        self.instructors[tem[3].strip('\n')].add_student_number(tem[1])
-                                elif doc == major_doc:
-                                    if len(tem) != 3:
-                                        print("Error: majors.txt file has wrong attribute")
-                                    for e in tem:
-                                        if e == '':
-                                            print("Error: There's a element is none in majors.txt")
-                                    #a = self.majors
-                                    if tem[0] in self.majors:
-                                        if tem[1] == 'R':
-                                            
-                                            self.majors[tem[0]].add_R(tem[2].strip('\n'))
-                                        else:
-                                            self.majors[tem[0]].add_E(tem[2].strip('\n'))
-                                    else:
-                                            
-                                        self.majors[tem[0]] = Majors()
-                                        if tem[1] == 'R':
-                                            
-                                            self.majors[tem[0]].add_R(tem[2].strip('\n'))
-                                        else:
-                                            self.majors[tem[0]].add_E(tem[2].strip('\n'))
-                                        
-                                    
+        try:
+            files = os.listdir(dir)
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Can't find the path of  {dir}")
         else:
-            raise FileNotFoundError("instructors.txt or students.txt or grades.txt or majors.txt not found")
-            
+            if "instructors.txt" and "students.txt" and "grades.txt" and 'majors.txt'in files:
+                student_doc = os.path.join(dir, "students.txt")
+                #student_doc = r"C:\Users\18646\Desktop\ssw810\students.txt"
+                doc_lst.append(student_doc)
+                instructor_doc = os.path.join(dir, "instructors.txt")
+                #instructor_doc = r"C:\Users\18646\Desktop\ssw810\instructors.txt"
+                doc_lst.append(instructor_doc)
+                grade_doc = os.path.join(dir, "grades.txt")
+                #grade_doc = r"C:\Users\18646\Desktop\ssw810\grades.txt"
+                doc_lst.append(grade_doc)
+                major_doc = os.path.join(dir, "majors.txt")
+                #major_doc = r"C:\Users\18646\Desktop\ssw810\majors.txt"
+                doc_lst.append(major_doc)
+                
+                
+                for doc in doc_lst:
+                    
+                    try:
+                        fp = open(doc, 'r')
+                    except FileNotFoundError:
+                        raise FileNotFoundError(f"Can't open {doc}")
+                    else:
+                        with fp:
+                            for line in fp:
+                                
+                                    
+                                    tem = line.replace('|','`').replace(';','`').replace('\t','`').split('`')
+                                    if doc == student_doc:
+                                        if len(tem) != 3:
+                                            print("Error: students.txt file has wrong attribute")
+                                        for e in tem:
+                                            if e == '':
+                                                print("Error: There's a element is none in students.txt")
+                                        if tem[0] == 'CWID':
+                                            continue
+                                        else:
+                                            self.students[tem[0]] = Student(tem[0], tem[1], tem[2]) 
+                                    elif doc == instructor_doc:
+                                        if len(tem) != 3:
+                                            print("Error: instructors.txt file has wrong attribute")
+                                        for e in tem:
+                                            if e == '': 
+                                                print("Error: There's a element is none in instructors.txt")
+                                        if tem[0] == 'CWID':
+                                            continue
+                                        else:
+                                            self.instructors[tem[0]] = Instructor(tem[0], tem[1], tem[2])
+                                    elif doc == grade_doc:
+                                        if len(tem) != 4:
+                                            print("Error: grades.txt file has wrong attribute")
+                                        for e in tem:
+                                            if e == '':
+                                                print("Error: There's a element is none in grades.txt")
+                                        #print(f"tem1 is {tem[1]}, tem2 is {tem[2]}")
+                                        if tem[0] == 'StudentCWID':
+                                            continue
+                                        else:
+                                            
+                                            try:
+                                                self.students[tem[0]].add_student_defaultdic(tem[1], tem[2])
+                                            except KeyError:
+                                                raise KeyError(f"Student ID: {tem[0]} exist in grades.txt, but not exist in student.txt")
+
+                                        #self.students[tem[0]].add_completed_courses(tem[1])
+                                        
+                                            try:
+                                                self.instructors[tem[3].strip('\n')].add_student_number(tem[1])
+                                            except KeyError:
+                                                instructor_error = tem[3].strip('\n')
+                                                raise KeyError(f"Instructor ID: {instructor_error} exist in grades.txt, but not exist in instructor.txt")
+                                    elif doc == major_doc:
+                                        if len(tem) != 3:
+                                            print("Error: majors.txt file has wrong attribute")
+                                        for e in tem:
+                                            if e == '':
+                                                print("Error: There's a element is none in majors.txt")
+                                        #a = self.majors
+                                        if tem[0] == 'unknow':
+                                            raise KeyError("E")
+                                        if tem[0] in self.majors:
+                                            if tem[1] == 'R':
+                                                
+                                                self.majors[tem[0]].add_R(tem[2].strip('\n'))
+                                            else:
+                                                self.majors[tem[0]].add_E(tem[2].strip('\n'))
+                                        else:
+                                                
+                                            self.majors[tem[0]] = Majors()
+                                            if tem[1] == 'R':
+                                                
+                                                self.majors[tem[0]].add_R(tem[2].strip('\n'))
+                                            else:
+                                                self.majors[tem[0]].add_E(tem[2].strip('\n'))
+                                            
+                                        
+            else:
+                raise FileNotFoundError("instructors.txt or students.txt or grades.txt or majors.txt not found")
+                
         
     
     def student_summary(self): 
@@ -253,7 +270,7 @@ class Majors:
 
   
 
-sit = Repository("/Users/yukai/Desktop/ssw-810/HW10")
+sit = Repository(r"C:\Users\18646\Desktop\ssw810")
 sit.student_summary()
 sit.instructor_summary()
 sit.major_summary()
