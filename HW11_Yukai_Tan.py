@@ -5,9 +5,11 @@ Created on Sun Oct 27 13:45:49 2019
 
 @author: yukai
 """
+
 from prettytable import PrettyTable
 from collections import defaultdict
 import os
+import sqlite3
 
 class Repository:
     """store every information for each school"""
@@ -108,9 +110,11 @@ class Repository:
                                             if e == '':
                                                 print("Error: There's a element is none in majors.txt")
                                         #a = self.majors
-                                        if tem[0] == 'unknow':
+                                        if tem[0] == 'Major':
+                                            continue
+                                        elif tem[0] == 'unknow':
                                             raise KeyError("E")
-                                        if tem[0] in self.majors:
+                                        elif tem[0] in self.majors:
                                             if tem[1] == 'R':
                                                 
                                                 self.majors[tem[0]].add_R(tem[2].strip('\n'))
@@ -221,7 +225,23 @@ class Repository:
             
         print(pretty_major_summary)
         return pretty_major_summary
-        
+    
+    def instructor_table_db(self, db_path):
+
+        db = sqlite3.connect(db_path)
+        pretty_instructor_summary2 = PrettyTable()
+        pretty_instructor_summary2.field_names = ["CWID", "Name", "Dept", "Course", "Students"]
+
+
+        query = "select CWID, Name, Dept, Course, count(StudentCWID) from instructors join grades on CWID = InstructorCWID group by Course"
+        for row in db.execute(query):
+
+            pretty_instructor_summary2.add_row(list(row))
+
+        print(pretty_instructor_summary2)
+        return pretty_instructor_summary2
+
+
 class Student:
     """store student inforamtion"""
     
@@ -274,5 +294,5 @@ sit = Repository(r"C:\Users\18646\Desktop\ssw810")
 sit.student_summary()
 sit.instructor_summary()
 sit.major_summary()
-
+sit.instructor_table_db(r"C:\Users\18646\Desktop\ssw810\810_startup.db")
       
