@@ -227,17 +227,18 @@ class Repository:
         return pretty_major_summary
     
     def instructor_table_db(self, db_path):
-
+        """get and return and print out instructor pretty table using sql database technique"""
         db = sqlite3.connect(db_path)
         pretty_instructor_summary2 = PrettyTable()
         pretty_instructor_summary2.field_names = ["CWID", "Name", "Dept", "Course", "Students"]
 
 
-        query = "select CWID, Name, Dept, Course, count(StudentCWID) from instructors join grades on CWID = InstructorCWID group by Course"
+        query = "select CWID, Name, Dept, Course, count(StudentCWID) from instructors join grades on CWID = InstructorCWID group by Course, instructors.CWID"
         for row in db.execute(query):
 
             pretty_instructor_summary2.add_row(list(row))
 
+        print("Here is second instructor pretty table")
         print(pretty_instructor_summary2)
         return pretty_instructor_summary2
 

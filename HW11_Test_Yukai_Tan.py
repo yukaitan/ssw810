@@ -62,7 +62,8 @@ class TestRepository(unittest.TestCase):
         exception = PrettyTable()
         exception.field_names = ['CWID', 'Name', 'Dept','Course','Students'] 
         exception.add_row(["98762" , 'Hawking, S' , 'CS' , 'CS 501' , '1'])
-        exception.add_row(["98762" , 'Hawking, S' , 'CS' , 'CS 546' , '2'])
+        exception.add_row(["98762" , 'Hawking, S' , 'CS' , 'CS 546' , '1'])
+        exception.add_row(["98764" , 'Cohen, R' , 'SFEN' , 'CS 546' , '1'])
         exception.add_row(["98762" , 'Hawking, S' , 'CS' , 'CS 570' , '1'])
         exception.add_row(["98763" , 'Rowland, J' , 'SFEN' , 'SSW 555' , '1'])
         exception.add_row(["98763" , 'Rowland, J' , 'SFEN' , 'SSW 810' , '4'])
