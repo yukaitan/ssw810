@@ -4,25 +4,31 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello():
+def titles():
     return "Stevens Repository"
 
 
-@app.route('/student_courses')
+@app.route('/instroctor')
 def student_courses():
-    DB_FILE = '/Users/TC/iCloudDrive/Desktop/ssw810/hw11/hw11_startup.db'
+    dbpath = r"C:\Users\18646\Desktop\ssw810\810_startup.db"
 
-    db = sqlite3.connect(DB_FILE)
-    query = '''SELECT i.CWID, i.Name, i.Dept, g.Course, count(g.Student_CWID) as Student from HW11_instructors i
-    left join HW11_grades g on i.CWID = g.Instructor_CWID group by g.Course;'''
+    try:
+        db = sqlite3.connect(dbpath)
+    except sqlite3.OperationalError:
+        return f"Error: Unable to open database at {dbpath}"
+    else:
 
-    results = db.execute(query)
 
-    data = [{'CWID': CWID, 'name': Name, 'Dept': dept,'Courses': Course, 'Students': Students } for CWID, Name, dept, Course, Students in results]
+        query = """select CWID, Name, Dept, Course, count(StudentCWID) from instructors join grades on CWID = InstructorCWID group by Course, instructors.CWID"""
+
+        data = [{'CWID': CWID, 'name': Name, 'Dept': Dept,'Courses': Course, 'Students': Students } for CWID, Name, Dept, Course, Students in db.execute(query)]
     
-    db.close()
+        db.close()
 
-    return render_template('student_course.html', title = 'Stevens Repository', table_title = 'Number of students by course and instructor',students = data)
+    return render_template('student_course.html', 
+                            title = 'Stevens Repository', 
+                            table_title = 'Number of students by course and instructor',
+                            students = data)
 
 app.run(debug=True)
 
